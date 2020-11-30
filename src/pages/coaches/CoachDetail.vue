@@ -40,6 +40,7 @@ export default {
       return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
     },
     contactLink() {
+      // Todo Contact Page에서 링크를 누르면 주소에 /contact가 계속 붙는다
       return `${this.$route.path}/contact`;
     },
     rate() {
