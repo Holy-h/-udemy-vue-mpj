@@ -40,8 +40,12 @@ export default {
       return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
     },
     contactLink() {
-      // Todo Contact Page에서 링크를 누르면 주소에 /contact가 계속 붙는다
-      return `${this.$route.path}/contact`;
+      return {
+        name: 'contactCoach',
+        params: {
+          id: this.id
+        }
+      };
     },
     rate() {
       return this.selectedCoach.hourlyRate;
@@ -53,7 +57,34 @@ export default {
       return this.selectedCoach.description;
     }
   },
+  methods: {
+    async getCoach() {
+      try {
+        this.selectedCoach = await this.$store.dispatch(
+          'coaches/getCoach',
+          this.id
+        );
+        console.log(this.selectedCoach);
+      } catch (error) {
+        alert(error);
+      }
+    },
+    async loadCoaches() {
+      this.isLoading = true;
+
+      try {
+        await this.$store.dispatch('coaches/loadCoaches');
+      } catch (error) {
+        console.log(error.message);
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
+    }
+  },
   created() {
+    this.loadCoaches();
+  },
+  mounted() {
     this.selectedCoach = this.$store.getters['coaches/coaches'].find(
       coach => coach.id === this.id
     );

@@ -42,12 +42,12 @@ export default {
         this.formIsValid = false;
         return;
       }
-      const payload = {
+      const formData = {
         email: this.email,
         message: this.message,
         coachId: this.$route.params.id
       };
-      this.$store.dispatch('requests/contactCoach', payload);
+      this.$store.dispatch('requests/contactCoach', formData);
       this.$router.replace('/coaches');
     }
   }

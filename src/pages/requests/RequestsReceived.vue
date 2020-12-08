@@ -30,6 +30,13 @@ export default {
     hasRequests() {
       return this.$store.getters['requests/hasRequests'];
     }
+  },
+  async created() {
+    try {
+      await this.$store.dispatch('requests/loadRequests');
+    } catch (error) {
+      alert(error);
+    }
   }
 };
 </script>

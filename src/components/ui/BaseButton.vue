@@ -21,9 +21,11 @@ export default {
       default: false
     },
     to: {
-      type: String,
+      type: Object,
       required: false,
-      default: '/'
+      default() {
+        return { name: 'coachesList' };
+      }
     }
   }
 };

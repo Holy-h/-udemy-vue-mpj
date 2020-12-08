@@ -23,10 +23,20 @@ export default {
       return `${this.firstName} ${this.lastName}`;
     },
     coachContactLink() {
-      return `${this.$route.path}/${this.id}/contact`;
+      return {
+        name: 'contactCoach',
+        params: {
+          id: this.id
+        }
+      };
     },
     coachDetailsLink() {
-      return `${this.$route.path}/${this.id}`;
+      return {
+        name: 'coachDetail',
+        params: {
+          id: this.id
+        }
+      };
     }
   }
 };
