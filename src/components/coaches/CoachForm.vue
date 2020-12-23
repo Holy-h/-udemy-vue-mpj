@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{ invalid: !firstName.isValid }">
-      <label for="firstname">Firstname</label>
+      <label for="firstname">이름</label>
       <input
         type="text"
         id="firstname"
@@ -11,7 +11,7 @@
       <p v-if="!firstName.isValid">Firstname must not be empty</p>
     </div>
     <div class="form-control" :class="{ invalid: !lastName.isValid }">
-      <label for="lastname">Lastname</label>
+      <label for="lastname">성</label>
       <input
         type="text"
         id="lastname"
@@ -21,7 +21,7 @@
       <p v-if="!lastName.isValid">Lastname must not be empty</p>
     </div>
     <div class="form-control" :class="{ invalid: !description.isValid }">
-      <label for="description">Description</label>
+      <label for="description">소개</label>
       <textarea
         id="description"
         rows="5"
@@ -31,7 +31,7 @@
       <p v-if="!description.isValid">Description must not be empty</p>
     </div>
     <div class="form-control" :class="{ invalid: !rate.isValid }">
-      <label for="rate">Hourly Rate</label>
+      <label for="rate">비용(시간당)</label>
       <input
         type="number"
         id="rate"
@@ -45,7 +45,7 @@
       :class="{ invalid: !areas.isValid }"
       @change="clearValidity('areas')"
     >
-      <h3>Areas of Expertise</h3>
+      <h3>전문영역</h3>
       <div>
         <input
           type="checkbox"
@@ -76,7 +76,7 @@
       </div>
     </div>
     <p v-if="!formIsValid">Please fix the above errors and submit again.</p>
-    <base-button>Register</base-button>
+    <base-button>회원가입</base-button>
   </form>
 </template>
 
@@ -144,10 +144,10 @@ export default {
       }
 
       const formData = {
-        first: this.firstName.value,
-        last: this.lastName.value,
-        desc: this.description.value,
-        rate: this.rate.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        description: this.description.value,
+        hourlyRate: this.rate.value,
         areas: this.areas.value
       };
       this.$emit('save-data', formData);
@@ -157,6 +157,11 @@ export default {
 </script>
 
 <style scoped>
+form {
+  display: grid;
+  gap: 16px;
+}
+
 .form-control {
   margin: 0.5rem 0;
 }

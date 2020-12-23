@@ -1,10 +1,16 @@
 <template>
+  <base-dialog :show="!!error" title="뭔가 잘못되었나봐요" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     <base-card>
       <header>
-        <h2>Requests Received</h2>
+        <h2>받은 메세지함</h2>
       </header>
-      <ul v-if="hasRequests">
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      <ul v-else-if="!isLoading && hasRequests">
         <request-item
           v-for="request in receivedRequests"
           :key="request.id"
@@ -12,7 +18,7 @@
           :message="request.message"
         ></request-item>
       </ul>
-      <h3 v-else>You haven't received any requests yet!</h3>
+      <h3 v-else>아직 받은 메세지가 없어요😂😂</h3>
     </base-card>
   </section>
 </template>
@@ -22,21 +28,36 @@ import RequestItem from '../../components/requests/RequestItem.vue';
 
 export default {
   components: { RequestItem },
+  data() {
+    return {
+      isLoading: true,
+      error: null
+    };
+  },
   computed: {
     receivedRequests() {
-      console.log(this.$store.getters['requests/requests']);
       return this.$store.getters['requests/requests'];
     },
     hasRequests() {
       return this.$store.getters['requests/hasRequests'];
     }
   },
-  async created() {
-    try {
-      await this.$store.dispatch('requests/loadRequests');
-    } catch (error) {
-      alert(error);
+  methods: {
+    async fetchRequests() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('requests/fetchRequests');
+      } catch (error) {
+        this.error = error.message || '메세지를 불러오지 못했습니다';
+      }
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
     }
+  },
+  created() {
+    this.fetchRequests();
   }
 };
 </script>

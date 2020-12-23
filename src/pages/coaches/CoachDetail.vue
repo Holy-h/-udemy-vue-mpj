@@ -1,5 +1,8 @@
 <template>
-  <section>
+  <base-dialog :show="!!error" title="뭔가 잘못되었나봐요" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
+  <section v-if="!isLoading">
     <base-card>
       <h2>{{ fullName }}</h2>
       <h3>${{ rate }}/hour</h3>
@@ -32,11 +35,20 @@ export default {
   props: ['id'],
   data() {
     return {
-      selectedCoach: null
+      isLoading: false,
+      error: null,
+      selectedCoach: {
+        firstName: '',
+        lastName: '',
+        hourlyRate: null,
+        areas: [],
+        description: ''
+      }
     };
   },
   computed: {
     fullName() {
+      console.log(this.selectedCoach);
       return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
     },
     contactLink() {
@@ -59,37 +71,43 @@ export default {
   },
   methods: {
     async getCoach() {
+      this.isLoading = true;
+
       try {
         this.selectedCoach = await this.$store.dispatch(
           'coaches/getCoach',
           this.id
         );
-        console.log(this.selectedCoach);
       } catch (error) {
-        alert(error);
-      }
-    },
-    async loadCoaches() {
-      this.isLoading = true;
-
-      try {
-        await this.$store.dispatch('coaches/loadCoaches');
-      } catch (error) {
-        console.log(error.message);
-        this.error = error.message || 'Something went wrong!';
+        this.error = error.message;
       }
       this.isLoading = false;
+    },
+    // async loadCoaches() {
+    //   this.isLoading = true;
+    //   try {
+    //     await this.$store.dispatch('coaches/loadCoaches');
+    //   } catch (error) {
+    //     console.log(error.message);
+    //     this.error = error.message || 'Something went wrong!';
+    //   }
+    //   this.isLoading = false;
+    // },
+    handleError() {
+      this.error = null;
     }
   },
   created() {
-    this.loadCoaches();
+    this.getCoach();
+    // this.loadCoaches();
+    // this.selectedCoach = this.$store.getters['coaches/coaches'].find(
+    //   coach => coach.id === this.id
+    // );
   },
   mounted() {
-    this.selectedCoach = this.$store.getters['coaches/coaches'].find(
-      coach => coach.id === this.id
-    );
-    console.log(this.selectedCoach);
-    console.log(this.$route.path);
+    // console.log(this.$store.getters['coaches/coaches']);
+    // console.log(this.selectedCoach);
+    // console.log(this.$route.path);
   }
 };
 </script>

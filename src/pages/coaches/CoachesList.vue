@@ -1,5 +1,5 @@
 <template>
-  <base-dialog :show="!!error" title="An error occurred!" @close="handleError">
+  <base-dialog :show="!!error" title="뭔가 잘못되었나봐요" @close="handleError">
     <p>{{ error }}</p>
   </base-dialog>
   <section>
@@ -8,7 +8,9 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+        <base-button mode="outline" @click="loadCoaches(true)"
+          >Refresh</base-button
+        >
         <base-button
           v-if="!isCoach && !isLoading"
           :to="{ name: 'registerCoach' }"
@@ -48,8 +50,8 @@ export default {
       activeFilters: {
         frontend: true,
         backend: true,
-        career: true
-      }
+        career: true,
+      },
     };
   },
   computed: {
@@ -71,31 +73,33 @@ export default {
     },
     hasCoaches() {
       return this.$store.getters['coaches/hasCoaches'];
-    }
+    },
   },
   methods: {
     setFilters(updatedFilters) {
       console.log(updatedFilters);
       this.activeFilters = updatedFilters;
     },
-    async loadCoaches() {
+    async loadCoaches(refresh = false) {
       this.isLoading = true;
-
       try {
-        await this.$store.dispatch('coaches/loadCoaches');
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forceRefresh: refresh,
+        });
       } catch (error) {
         console.log(error.message);
         this.error = error.message || 'Something went wrong!';
+      } finally {
+        this.isLoading = false;
       }
-      this.isLoading = false;
     },
     handleError() {
       this.error = null;
-    }
+    },
   },
   created() {
     this.loadCoaches();
-  }
+  },
 };
 </script>
 

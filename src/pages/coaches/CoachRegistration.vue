@@ -1,7 +1,7 @@
 <template>
   <section>
     <base-card>
-      <h2>Register as a coach now!</h2>
+      <h2>코치로 가입하기</h2>
       <coach-form @save-data="saveData"></coach-form>
     </base-card>
   </section>
@@ -17,7 +17,9 @@ export default {
     saveData(data) {
       console.log(data);
       this.$store.dispatch('coaches/registerCoach', data);
-      this.$router.replace('/coaches');
+      this.$router.replace({
+        name: 'coachesList'
+      });
     }
   }
 };
