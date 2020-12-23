@@ -1,26 +1,28 @@
 <template>
-  <section>
-    <base-card>
-      <h2>코치로 가입하기</h2>
-      <coach-form @save-data="saveData"></coach-form>
-    </base-card>
-  </section>
+  <div>
+    <section>
+      <base-card>
+        <h2>코치로 가입하기</h2>
+        <coach-form @save-data="saveData"></coach-form>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
 import CoachForm from '../../components/coaches/CoachForm.vue';
 export default {
   components: {
-    CoachForm
+    CoachForm,
   },
   methods: {
     saveData(data) {
       console.log(data);
       this.$store.dispatch('coaches/registerCoach', data);
       this.$router.replace({
-        name: 'coachesList'
+        name: 'coachesList',
       });
-    }
-  }
+    },
+  },
 };
 </script>

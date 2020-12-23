@@ -36,7 +36,7 @@ export default {
 
     try {
       const response = await fetch(
-        `https://vue-http-demo-ab86b.firebaseio.com/coaches.jso`
+        `https://vue-http-demo-ab86b.firebaseio.com/coaches.json`
       );
       const responseData = await response.json();
       const coaches = Object.values(responseData);

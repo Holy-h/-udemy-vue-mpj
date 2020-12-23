@@ -1,33 +1,39 @@
 <template>
-  <base-dialog :show="!!error" title="뭔가 잘못되었나봐요" @close="handleError">
-    <p>{{ error }}</p>
-  </base-dialog>
-  <section v-if="!isLoading">
-    <base-card>
-      <h2>{{ fullName }}</h2>
-      <h3>${{ rate }}/hour</h3>
-    </base-card>
-  </section>
-  <section>
-    <base-card>
-      <header>
-        <h2>Interested? Reach out now!</h2>
-        <base-button link :to="contactLink">Contact</base-button>
-      </header>
-      <router-view> </router-view>
-    </base-card>
-  </section>
-  <section>
-    <base-card>
-      <base-badge
-        v-for="area in areas"
-        :key="area"
-        :type="area"
-        :title="area"
-      ></base-badge>
-      <p>{{ description }}</p>
-    </base-card>
-  </section>
+  <div>
+    <base-dialog
+      :show="!!error"
+      title="뭔가 잘못되었나봐요"
+      @close="handleError"
+    >
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section v-if="!isLoading">
+      <base-card>
+        <h2>{{ fullName }}</h2>
+        <h3>${{ rate }}/hour</h3>
+      </base-card>
+    </section>
+    <section>
+      <base-card>
+        <header>
+          <h2>Interested? Reach out now!</h2>
+          <base-button link :to="contactLink">Contact</base-button>
+        </header>
+        <router-view> </router-view>
+      </base-card>
+    </section>
+    <section>
+      <base-card>
+        <base-badge
+          v-for="area in areas"
+          :key="area"
+          :type="area"
+          :title="area"
+        ></base-badge>
+        <p>{{ description }}</p>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -42,8 +48,8 @@ export default {
         lastName: '',
         hourlyRate: null,
         areas: [],
-        description: ''
-      }
+        description: '',
+      },
     };
   },
   computed: {
@@ -55,8 +61,8 @@ export default {
       return {
         name: 'contactCoach',
         params: {
-          id: this.id
-        }
+          id: this.id,
+        },
       };
     },
     rate() {
@@ -67,7 +73,7 @@ export default {
     },
     description() {
       return this.selectedCoach.description;
-    }
+    },
   },
   methods: {
     async getCoach() {
@@ -95,7 +101,7 @@ export default {
     // },
     handleError() {
       this.error = null;
-    }
+    },
   },
   created() {
     this.getCoach();
@@ -108,6 +114,6 @@ export default {
     // console.log(this.$store.getters['coaches/coaches']);
     // console.log(this.selectedCoach);
     // console.log(this.$route.path);
-  }
+  },
 };
 </script>
