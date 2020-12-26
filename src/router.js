@@ -12,12 +12,12 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/coaches'
+      redirect: '/coaches',
     },
     {
       path: '/coaches',
       component: CoachesList,
-      name: 'coachesList'
+      name: 'coachesList',
     },
     {
       path: '/coaches/:id',
@@ -28,25 +28,25 @@ const router = createRouter({
         {
           path: 'contact',
           component: ContactCoach,
-          name: 'contactCoach'
-        }
-      ]
+          name: 'contactCoach',
+        },
+      ],
     },
     {
       path: '/register',
       component: CoachRegistration,
-      name: 'registerCoach'
+      name: 'registerCoach',
     },
     {
       path: '/requests',
       component: RequestsReceived,
-      name: 'requestsList'
+      name: 'requestsList',
     },
     {
       path: '/:notFound(.*)',
-      component: notFound
-    }
-  ]
+      component: notFound,
+    },
+  ],
 });
 
 export default router;
