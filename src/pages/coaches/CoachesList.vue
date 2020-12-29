@@ -13,15 +13,28 @@
     <section>
       <base-card>
         <div class="controls">
-          <base-button mode="outline" @click="loadCoaches(true)"
-            >Refresh</base-button
-          >
+          <base-button mode="outline" @click="loadCoaches(true)">
+            새로고침
+          </base-button>
           <base-button
-            v-if="!isCoach && !isLoading"
+            v-if="!isLoggedIn"
+            :link="true"
+            :to="{
+              name: 'auth',
+              query: {
+                redirect: 'registerCoach',
+              },
+            }"
+          >
+            로그인하고 코치로 등록하기
+          </base-button>
+          <base-button
+            v-if="!isLoading && isLoggedIn && !isCoach"
             :to="{ name: 'registerCoach' }"
             :link="true"
-            >Register as Coach</base-button
           >
+            코치로 등록하기
+          </base-button>
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
@@ -61,12 +74,14 @@ export default {
     };
   },
   computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
     isCoach() {
       return this.$store.getters['coaches/isCoach'];
     },
     filteredCoaches() {
       const coaches = this.$store.getters['coaches/coaches'];
-
       return coaches.filter(coach => {
         for (let key in this.activeFilters) {
           console.log(key);

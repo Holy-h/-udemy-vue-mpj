@@ -6,15 +6,41 @@
       </h1>
       <ul>
         <li>
-          <router-link :to="{ name: 'coachesList' }">All Coaches</router-link>
+          <router-link :to="{ name: 'coachesList' }">코치 목록</router-link>
         </li>
-        <li>
-          <router-link :to="{ name: 'requestsList' }">Requests</router-link>
+        <template v-if="isLoggedIn">
+          <li>
+            <router-link :to="{ name: 'requestsList' }">
+              받은 메세지
+            </router-link>
+          </li>
+          <li>
+            <base-button @click="logout">로그아웃</base-button>
+          </li>
+        </template>
+        <li v-else>
+          <router-link :to="{ name: 'auth' }">로그인</router-link>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script>
+export default {
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.replace({ name: 'coachesList' });
+    },
+  },
+};
+</script>
 
 <style scoped>
 header {

@@ -28,12 +28,22 @@ export default {
   },
   async fetchRequests(context) {
     const userId = context.rootGetters.userId;
-
+    const token = context.rootGetters.token;
+    console.log(token);
     try {
       const response = await fetch(
-        `https://vue-http-demo-ab86b.firebaseio.com/requests/${userId}.json`
+        `https://vue-http-demo-ab86b.firebaseio.com/requests/${userId}.json?auth=${token}`
       );
       const responseData = await response.json();
+
+      if (!response.ok) {
+        console.log(responseData);
+        const error = new Error(
+          responseData.error || '문의사항을 불러오지 못했습니다.'
+        );
+        throw error;
+      }
+
       if (responseData) {
         const requests = Object.keys(responseData).map(id => {
           return {
@@ -42,7 +52,6 @@ export default {
           };
         });
         context.commit('setRequests', requests);
-        // context.commit('setFetchTimestamp');
       }
     } catch (error) {
       throw new Error(error);

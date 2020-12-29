@@ -1,10 +1,6 @@
 <template>
   <div>
-    <base-dialog
-      :show="!!error"
-      title="뭔가 잘못되었나봐요"
-      @close="handleError"
-    >
+    <base-dialog :show="!!error" title="아...야.." @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -54,6 +50,7 @@ export default {
       try {
         await this.$store.dispatch('requests/fetchRequests');
       } catch (error) {
+        console.log(error.message);
         this.error = error.message || '메세지를 불러오지 못했습니다';
       }
       this.isLoading = false;
